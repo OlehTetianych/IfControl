@@ -1,0 +1,40 @@
+    public class If : ContentControl
+    {
+        public bool Condition
+        {
+            get { return (bool)GetValue(ConditionProperty); }
+            set { SetValue(ConditionProperty, value); }
+        }
+
+        public static readonly DependencyProperty ConditionProperty =
+            DependencyProperty.Register("Condition", typeof(bool), typeof(If), new PropertyMetadata(default(bool), OnContentDependentPropertyChanged));
+
+        public Visual True
+        {
+            get { return (Visual)GetValue(TrueProperty); }
+            set { SetValue(TrueProperty, value); }
+        }
+
+        public static readonly DependencyProperty TrueProperty =
+            DependencyProperty.Register("True", typeof(Visual), typeof(If), new PropertyMetadata(null));
+
+        public Visual False
+        {
+            get { return (Visual)GetValue(FalseProperty); }
+            set { SetValue(FalseProperty, value); }
+        }
+
+        public static readonly DependencyProperty FalseProperty =
+            DependencyProperty.Register("False", typeof(Visual), typeof(If), new PropertyMetadata(null));
+
+        public void UpdateContent()
+        {
+            Content = Condition ? True : False;
+        }
+
+        private static void OnContentDependentPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            If current = (If)d;
+            current.UpdateContent();
+        }
+    }
